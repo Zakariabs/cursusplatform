@@ -8,16 +8,19 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('faq_categories', function (Blueprint $table) {
+        Schema::create('news', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
+            $table->string('title');
+            $table->string('image')->nullable();
+            $table->text('content');
+            $table->date('publish_date');
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('faq_categories');
+        Schema::dropIfExists('news');
     }
 };
