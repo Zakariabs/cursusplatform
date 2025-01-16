@@ -8,21 +8,26 @@ use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
-    // Toon alle FAQs gegroepeerd per categorie
+    // Publiek toegankelijk
+    #[\Illuminate\Routing\Middleware\SubstituteBindings]
     public function index()
     {
         $categories = FaqCategory::with('faqs')->get();
         return view('faq.index', compact('categories'));
     }
 
-    // Formulier voor nieuwe FAQ
+    // Alleen admin
+    #[\Illuminate\Auth\Middleware\Authenticate]
+    #[\App\Http\Middleware\AdminMiddleware]
     public function create()
     {
         $categories = FaqCategory::all();
         return view('faq.create', compact('categories'));
     }
 
-    // Opslaan van nieuwe FAQ
+    // Alleen admin
+    #[\Illuminate\Auth\Middleware\Authenticate]
+    #[\App\Http\Middleware\AdminMiddleware]
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -37,20 +42,25 @@ class FaqController extends Controller
             ->with('success', 'FAQ succesvol toegevoegd');
     }
 
-    // Toon één FAQ
+    // Publiek toegankelijk
+    #[\Illuminate\Routing\Middleware\SubstituteBindings]
     public function show(Faq $faq)
     {
         return view('faq.show', compact('faq'));
     }
 
-    // Formulier om FAQ te bewerken
+    // Alleen admin
+    #[\Illuminate\Auth\Middleware\Authenticate]
+    #[\App\Http\Middleware\AdminMiddleware]
     public function edit(Faq $faq)
     {
         $categories = FaqCategory::all();
         return view('faq.edit', compact('faq', 'categories'));
     }
 
-    // Update een FAQ
+    // Alleen admin
+    #[\Illuminate\Auth\Middleware\Authenticate]
+    #[\App\Http\Middleware\AdminMiddleware]
     public function update(Request $request, Faq $faq)
     {
         $validated = $request->validate([
@@ -65,7 +75,9 @@ class FaqController extends Controller
             ->with('success', 'FAQ succesvol bijgewerkt');
     }
 
-    // Verwijder een FAQ
+    // Alleen admin
+    #[\Illuminate\Auth\Middleware\Authenticate]
+    #[\App\Http\Middleware\AdminMiddleware]
     public function destroy(Faq $faq)
     {
         $faq->delete();
