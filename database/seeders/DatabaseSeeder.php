@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Faq;
+use App\Models\News;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,7 +14,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CourseSeeder::class,
             AICategorySeeder::class,
-            AINewsSeeder::class
+            AINewsSeeder::class,
+            FaqSeeder::class,
+            NewsSeeder::class,
         ]);
     }
 }

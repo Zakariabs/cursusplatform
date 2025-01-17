@@ -10,12 +10,24 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Default admin volgens vereisten
-        User::create([
-            'name' => 'admin',
-            'email' => 'admin@ehb.be',
-            'password' => Hash::make('Password!321'),
-            'is_admin' => true,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@ehb.be'],
+            [
+                'name' => 'admin',
+                'password' => Hash::make('Password!321'),
+                'email_verified_at' => now(),
+                'is_admin' => true
+            ]
+        );
+
+        User::firstOrCreate(
+            ['email' => 'student@ehb.be'],
+            [
+                'name' => 'Student',
+                'password' => Hash::make('Password!321'),
+                'email_verified_at' => now(),
+                'is_admin' => false
+            ]
+        );
     }
 }

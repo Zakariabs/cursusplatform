@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('what_you_learn');
             $table->integer('duration_weeks');
             $table->boolean('is_published')->default(false);
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

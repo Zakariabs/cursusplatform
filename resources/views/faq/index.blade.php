@@ -5,7 +5,7 @@
                 {{ __('FAQ') }}
             </h2>
             @if(auth()->user()?->is_admin)
-                <a href="{{ route('faq.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('admin.faq.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Nieuwe vraag toevoegen
                 </a>
             @endif
@@ -20,49 +20,33 @@
                 </div>
             @endif
 
-            @forelse($categories as $category)
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
-                    <div class="p-6">
-                        <h3 class="text-lg font-bold mb-4">{{ $category->name }}</h3>
-                        
-                        @if($category->description)
-                            <p class="text-gray-600 mb-4">{{ $category->description }}</p>
-                        @endif
-
-                        <div class="space-y-4">
-                            @forelse($category->faqs as $faq)
-                                <div class="border-b pb-4">
-                                    <h4 class="font-semibold mb-2">{{ $faq->question }}</h4>
-                                    <p class="text-gray-700">{{ $faq->answer }}</p>
-                                    
-                                    @if(auth()->user()?->is_admin)
-                                        <div class="mt-2 space-x-4">
-                                            <a href="{{ route('faq.edit', $faq) }}" class="text-yellow-500 hover:underline">
-                                                Bewerken
-                                            </a>
-                                            <form action="{{ route('faq.destroy', $faq) }}" method="POST" class="inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-500 hover:underline" onclick="return confirm('Weet je zeker dat je deze FAQ wilt verwijderen?')">
-                                                    Verwijderen
-                                                </button>
-                                            </form>
-                                        </div>
-                                    @endif
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    @forelse($faqs as $faq)
+                        <div class="mb-4">
+                            <h3 class="font-bold text-lg">{{ $faq->question }}</h3>
+                            <p class="mt-2">{{ $faq->answer }}</p>
+                            @if(auth()->user()?->is_admin)
+                                <div class="mt-2 flex space-x-2">
+                                    <a href="{{ route('admin.faq.edit', $faq) }}" class="text-blue-500 hover:text-blue-700">
+                                        Bewerken
+                                    </a>
+                                    <form action="{{ route('admin.faq.destroy', $faq) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:text-red-700" 
+                                                onclick="return confirm('Weet je zeker dat je deze vraag wilt verwijderen?')">
+                                            Verwijderen
+                                        </button>
+                                    </form>
                                 </div>
-                            @empty
-                                <p class="text-gray-600">Geen vragen in deze categorie.</p>
-                            @endforelse
+                            @endif
                         </div>
-                    </div>
+                    @empty
+                        <p>Geen FAQ items gevonden.</p>
+                    @endforelse
                 </div>
-            @empty
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <p>Er zijn nog geen FAQ categorieën.</p>
-                    </div>
-                </div>
-            @endforelse
+            </div>
         </div>
     </div>
 </x-app-layout>

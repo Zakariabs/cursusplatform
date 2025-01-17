@@ -1,66 +1,194 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Laten we een complete README.md maken voor het AI Cursusplatform:
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+```markdown
+# AI Cursusplatform
 
-## About Laravel
+Een Laravel-gebaseerd platform voor AI-gerelateerde cursussen met focus op gebruiksvriendelijkheid en administratief beheer. Het systeem stelt gebruikers in staat om informatie over AI-cursussen te bekijken en contact op te nemen met administrators.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Core Functionaliteiten
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Authenticatie & Autorisatie
+- Breeze authenticatie systeem
+- Twee gebruikersrollen: admin en reguliere gebruikers
+- Default admin (admin@ehb.be) met speciale rechten
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Gebruikersprofielen
+- Aanpasbare profielen met foto's
+- Biografieën
+- Verjaardagsinformatie
+- Publiek toegankelijke profielpagina's
 
-## Learning Laravel
+### Nieuws Systeem
+- AI-gerelateerde nieuwsberichten
+- Image upload functionaliteit
+- Publicatiedatum beheer
+- CRUD operaties voor admins
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### FAQ Systeem
+- Gecategoriseerde vragen
+- AI-specifieke categorieën zoals:
+  - Machine Learning
+  - Deep Learning
+  - AI Tools & Frameworks
+- Admin beheer van vragen en categorieën
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Contact Systeem
+- AI-specifiek contactformulier
+- Gespecialiseerde onderwerpkeuzes
+- Email notificaties (lokaal naar log)
+- Admin dashboard voor berichten
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Technische Specificaties
 
-## Laravel Sponsors
+- Laravel 11
+- SQLite database
+- Tailwind CSS styling
+- Blade templating
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Installatie
 
-### Premium Partners
+1. Clone de repository
+```bash
+git clone [repository-url]
+cd ai-cursusplatform
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+2. Installeer dependencies
+```bash
+composer install
+npm install
+```
 
-## Contributing
+3. Configureer de omgeving
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. Setup database
+```bash
+touch database/database.sqlite
+php artisan migrate
+php artisan db:seed
+```
 
-## Code of Conduct
+5. Start de ontwikkelserver
+```bash
+php artisan serve
+npm run dev
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Gebruik
 
-## Security Vulnerabilities
+### Default Admin Account
+- Email: admin@ehb.be
+- Wachtwoord: password
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Publieke Toegang
+- Bekijk cursussen
+- Lees nieuws
+- Bekijk FAQ
+- Contact opnemen
+
+### Admin Functionaliteiten
+- Beheer gebruikers
+- Beheer cursussen
+- Beheer nieuws
+- Beheer FAQ
+- Bekijk contactberichten
+
+## Project Structuur
+
+```plaintext
+resources/views/
+├── admin/          # Admin views
+├── auth/           # Authenticatie views
+├── components/     # Blade components
+├── contact/        # Contact formulier
+├── courses/        # Cursus views
+├── emails/         # Email templates
+├── faq/            # FAQ views
+├── layouts/        # Layout templates
+├── news/          # Nieuws views
+└── profile/       # Profiel views
+
+app/Http/Controllers/
+├── AdminController.php
+├── Auth/
+├── ContactController.php
+├── CourseController.php
+├── DashboardController.php
+├── FaqController.php
+├── NewsController.php
+└── ProfileController.php
+
+app/Models/
+├── Contact.php
+├── Course.php
+├── FaqCategory.php
+├── Faq.php
+├── News.php
+└── User.php
+```
+
+## Development
+
+### Toevoegen van nieuwe features
+1. Maak een nieuwe branch
+2. Ontwikkel de feature
+3. Test de functionaliteit
+4. Maak een pull request
+
+### Code Style
+- PSR-12 coding standards
+- Tailwind CSS classes
+- Blade component best practices
+
+## Testing
+
+Run de tests met:
+```bash
+php artisan test
+```
+
+## Maintenance
+
+### Database backups
+```bash
+php artisan backup:run
+```
+
+### Cache clearing
+```bash
+php artisan optimize:clear
+```
+
+## Support
+
+Bij vragen of problemen:
+1. Check de FAQ sectie
+2. Contacteer de admin via het contactformulier
+3. Open een issue op GitHub
+
+## Bijdragen
+
+1. Fork het project
+2. Maak je feature branch
+3. Commit je wijzigingen
+4. Push naar de branch
+5. Open een Pull Request
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Dit project is gelicenseerd onder de MIT License.
+```
+
+Dit is een uitgebreide README die:
+1. Het project beschrijft
+2. Installatieprocessen documenteert
+3. Gebruiksinstructies biedt
+4. Project structuur uitlegt
+5. Development workflows beschrijft
+6. Maintenance procedures definieert
+
+Wil je dat ik specifieke secties uitbreid of andere informatie toevoeg?

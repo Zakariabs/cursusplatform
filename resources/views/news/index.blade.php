@@ -5,13 +5,12 @@
                 {{ __('Nieuws') }}
             </h2>
             @if(auth()->user()?->is_admin)
-                <a href="{{ route('news.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('admin.news.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Nieuw artikel
                 </a>
             @endif
         </div>
     </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             @if (session('success'))
@@ -20,44 +19,47 @@
                 </div>
             @endif
 
-            <div class="grid md:grid-cols-2 gap-6">
-                @forelse($news as $article)
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @forelse($newsItems as $news)
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        @if($article->image)
-                            <img src="{{ Storage::url($article->image) }}" alt="{{ $article->title }}" class="w-full h-48 object-cover">
+                        @if($news->image)
+                            <img src="{{ Storage::url($news->image) }}" alt="{{ $news->title }}" class="w-full h-48 object-cover">
                         @endif
                         <div class="p-6">
-                            <h3 class="text-lg font-bold mb-2">{{ $article->title }}</h3>
-                            <p class="text-gray-600 text-sm mb-2">
-                                {{ $article->publish_date->format('d-m-Y') }}
-                            </p>
-                            <p class="text-gray-700 mb-4">
-                                {{ Str::limit($article->content, 150) }}
-                            </p>
-                            <div class="flex space-x-4">
-                                <a href="{{ route('news.show', $article) }}" class="text-blue-500 hover:underline">
+                            <h3 class="text-xl font-bold mb-2">{{ $news->title }}</h3>
+                            <p class="text-gray-600 mb-4">{{ Str::limit($news->content, 150) }}</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">{{ $news->created_at->format('d-m-Y') }}</span>
+                                <a href="{{ route('news.show', $news) }}" class="text-blue-500 hover:text-blue-700">
                                     Lees meer
                                 </a>
-                                @if(auth()->user()?->is_admin)
-                                    <a href="{{ route('news.edit', $article) }}" class="text-yellow-500 hover:underline">
+                            </div>
+                            @if(auth()->user()?->is_admin)
+                                <div class="mt-4 flex space-x-2">
+                                    <a href="{{ route('admin.news.edit', $news) }}" class="text-yellow-500 hover:text-yellow-700">
                                         Bewerken
                                     </a>
-                                    <form action="{{ route('news.destroy', $article) }}" method="POST" class="inline">
+                                    <form action="{{ route('admin.news.destroy', $news) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-500 hover:underline" onclick="return confirm('Weet je zeker dat je dit artikel wilt verwijderen?')">
+                                        <button type="submit" class="text-red-500 hover:text-red-700"
+                                                onclick="return confirm('Weet je zeker dat je dit artikel wilt verwijderen?')">
                                             Verwijderen
                                         </button>
                                     </form>
-                                @endif
-                            </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 @empty
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                        <p>Er zijn nog geen nieuwsartikelen.</p>
+                    <div class="col-span-3">
+                        <p class="text-gray-500 text-center">Geen nieuwsartikelen gevonden.</p>
                     </div>
                 @endforelse
+            </div>
+
+            <div class="mt-6">
+                {{ $newsItems->links() }}
             </div>
         </div>
     </div>
