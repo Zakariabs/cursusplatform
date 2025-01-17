@@ -22,7 +22,6 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
 
-
 // Authenticated user routes
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -46,7 +45,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin routes
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group(function () {
     // Admin dashboard
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
     
@@ -60,17 +59,27 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     
     // Course management
     Route::get('/courses', [CourseController::class, 'adminIndex'])->name('courses.index');
-    Route::resource('courses', CourseController::class)->except(['index', 'show']);
+    Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');
+    Route::post('/courses', [CourseController::class, 'store'])->name('courses.store');
+    Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->name('courses.edit');
+    Route::put('/courses/{course}', [CourseController::class, 'update'])->name('courses.update');
+    Route::delete('/courses/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
     
     // News management
-    Route::get('/news/create', [NewsController::class, 'create'])->name('news.create');
-    Route::post('/news', [NewsController::class, 'store'])->name('news.store');
-    Route::get('/news/{news}/edit', [NewsController::class, 'edit'])->name('news.edit');
-    Route::patch('/news/{news}', [NewsController::class, 'update'])->name('news.update');
-    Route::delete('/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
+    Route::get('/news', [NewsController::class, 'adminIndex'])->name('news.index');
+    Route::get('/news/create', [NewsController::class, 'adminCreate'])->name('news.create');
+    Route::post('/news', [NewsController::class, 'adminStore'])->name('news.store');
+    Route::get('/news/{news}/edit', [NewsController::class, 'adminEdit'])->name('news.edit');
+    Route::patch('/news/{news}', [NewsController::class, 'adminUpdate'])->name('news.update');
+    Route::delete('/news/{news}', [NewsController::class, 'adminDestroy'])->name('news.destroy');
     
     // FAQ management
-    Route::resource('faq', FaqController::class)->except(['index']);
+    Route::get('/faq', [FaqController::class, 'adminIndex'])->name('faq.index');
+    Route::get('/faq/create', [FaqController::class, 'adminCreate'])->name('faq.create');
+    Route::post('/faq', [FaqController::class, 'adminStore'])->name('faq.store');
+    Route::get('/faq/{faq}/edit', [FaqController::class, 'adminEdit'])->name('faq.edit');
+    Route::patch('/faq/{faq}', [FaqController::class, 'adminUpdate'])->name('faq.update');
+    Route::delete('/faq/{faq}', [FaqController::class, 'adminDestroy'])->name('faq.destroy');
     
     // Contact messages management
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts');

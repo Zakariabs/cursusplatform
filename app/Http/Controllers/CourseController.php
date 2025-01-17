@@ -34,13 +34,17 @@ class CourseController extends Controller
     // Admin methods
     public function create()
     {
-        $this->authorize('admin');
+        if (!auth()->user()->is_admin) {
+            abort(403, 'This action is unauthorized.');
+        }
         return view('courses.create');
     }
 
     public function store(Request $request)
     {
-        $this->authorize('admin');
+        if (!auth()->user()->is_admin) {
+            abort(403, 'This action is unauthorized.');
+        }
         
         $validated = $request->validate([
             'title' => 'required|string|max:255',
