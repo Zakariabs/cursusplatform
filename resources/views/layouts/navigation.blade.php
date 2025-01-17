@@ -11,25 +11,37 @@
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    
-                    <x-nav-link :href="route('news.index')" :active="request()->routeIs('news.*')">
-                        {{ __('Nieuws') }}
-                    </x-nav-link>
 
-                    <x-nav-link :href="route('faq.index')" :active="request()->routeIs('faq.*')">
-                        {{ __('FAQ') }}
-                    </x-nav-link>
+<!-- Navigation Links -->
+<div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+    <!-- Publieke Links -->
+    <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.index')">
+        {{ __('Cursussen') }}
+    </x-nav-link>
+    <x-nav-link :href="route('news.index')" :active="request()->routeIs('news.index')">
+        {{ __('Nieuws') }}
+    </x-nav-link>
+    <x-nav-link :href="route('faq.index')" :active="request()->routeIs('faq.index')">
+        {{ __('FAQ') }}
+    </x-nav-link>
+    <x-nav-link :href="route('contact.create')" :active="request()->routeIs('contact.create')">
+        {{ __('Contact') }}
+    </x-nav-link>
+    <!-- Rest van de navigatie -->
+</div>
 
-                    <x-nav-link :href="route('contact.create')" :active="request()->routeIs('contact.*')">
-                        {{ __('Contact') }}
-                    </x-nav-link>
-                </div>
-            </div>
+    <!-- Auth Links -->
+    @auth
+        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            {{ __('Dashboard') }}
+        </x-nav-link>
+        @if(auth()->user()->is_admin)
+            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                {{ __('Admin') }}
+            </x-nav-link>
+        @endif
+    @endauth
+</div>
 
             <!-- Right Side -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
