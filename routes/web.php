@@ -63,9 +63,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('courses', CourseController::class)->except(['index', 'show']);
     
     // News management
-    Route::resource('news', NewsController::class)->except(['index', 'show']);
+    Route::get('/news/create', [NewsController::class, 'create'])->name('news.create');
+    Route::post('/news', [NewsController::class, 'store'])->name('news.store');
+    Route::get('/news/{news}/edit', [NewsController::class, 'edit'])->name('news.edit');
+    Route::patch('/news/{news}', [NewsController::class, 'update'])->name('news.update');
+    Route::delete('/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
     
-    // FAQ management (correct gedefinieerd)
+    // FAQ management
     Route::resource('faq', FaqController::class)->except(['index']);
     
     // Contact messages management

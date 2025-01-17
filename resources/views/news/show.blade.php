@@ -6,10 +6,10 @@
             </h2>
             @if(auth()->user()?->is_admin)
                 <div class="flex space-x-4">
-                    <a href="{{ route('news.edit', $news) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+                    <a href="{{ route('admin.news.edit', $news) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
                         Bewerken
                     </a>
-                    <form action="{{ route('news.destroy', $news) }}" method="POST" class="inline">
+                    <form action="{{ route('admin.news.destroy', $news) }}" method="POST" class="inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('Weet je zeker dat je dit artikel wilt verwijderen?')">

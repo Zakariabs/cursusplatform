@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class NewsController extends Controller
 {
+    use AuthorizesRequests, ValidatesRequests;
+
     public function index()
     {
         $newsItems = News::latest()->paginate(12);
@@ -21,13 +25,17 @@ class NewsController extends Controller
 
     public function create()
     {
-        $this->authorize('admin');
+        if(!auth()->user()->is_admin) {
+            return redirect()->route('home')->with('error', 'Toegang geweigerd');
+        }
         return view('news.create');
     }
 
     public function store(Request $request)
     {
-        $this->authorize('admin');
+        if(!auth()->user()->is_admin) {
+            return redirect()->route('home')->with('error', 'Toegang geweigerd');
+        }
         
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -41,18 +49,22 @@ class NewsController extends Controller
 
         News::create($validated);
 
-        return redirect()->route('news.index')->with('success', 'Nieuws artikel succesvol aangemaakt.');
+        return redirect()->route('admin.news.index')->with('success', 'Nieuws artikel succesvol aangemaakt.');
     }
 
     public function edit(News $news)
     {
-        $this->authorize('admin');
+        if(!auth()->user()->is_admin) {
+            return redirect()->route('home')->with('error', 'Toegang geweigerd');
+        }
         return view('news.edit', compact('news'));
     }
 
     public function update(Request $request, News $news)
     {
-        $this->authorize('admin');
+        if(!auth()->user()->is_admin) {
+            return redirect()->route('home')->with('error', 'Toegang geweigerd');
+        }
         
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -69,12 +81,14 @@ class NewsController extends Controller
 
         $news->update($validated);
 
-        return redirect()->route('news.index')->with('success', 'Nieuws artikel succesvol bijgewerkt.');
+        return redirect()->route('admin.news.index')->with('success', 'Nieuws artikel succesvol bijgewerkt.');
     }
 
     public function destroy(News $news)
     {
-        $this->authorize('admin');
+        if(!auth()->user()->is_admin) {
+            return redirect()->route('home')->with('error', 'Toegang geweigerd');
+        }
         
         if ($news->image) {
             Storage::disk('public')->delete($news->image);
@@ -82,6 +96,6 @@ class NewsController extends Controller
         
         $news->delete();
 
-        return redirect()->route('news.index')->with('success', 'Nieuws artikel succesvol verwijderd.');
+        return redirect()->route('admin.news.index')->with('success', 'Nieuws artikel succesvol verwijderd.');
     }
 }
