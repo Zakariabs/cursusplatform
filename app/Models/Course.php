@@ -18,13 +18,19 @@ class Course extends Model
         'image',
         'difficulty_level',
         'duration_weeks',
-        'is_published'
+        'is_published',
+        'requirements',
+        'what_you_learn',
+        'level'
     ];
 
     protected $casts = [
         'is_published' => 'boolean',
         'duration_weeks' => 'integer',
+        'requirements' => 'array',
+        'what_you_learn' => 'array'
     ];
+
 
     // Relatie met gebruikers die ingeschreven zijn
     public function students()
