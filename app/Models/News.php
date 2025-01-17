@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
-    // Specificeer de table naam
     protected $table = 'news';
 
     protected $fillable = [
@@ -15,6 +14,10 @@ class News extends Model
         'content',
         'publish_date',
         'user_id'
+    ];
+
+    protected $casts = [
+        'publish_date' => 'datetime'
     ];
 
     public function user()

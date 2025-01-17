@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;  // Add this
+use Illuminate\Support\Facades\Storage;  // Add this
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Requests\UpdateProfilePhotoRequest;
 use Illuminate\Http\RedirectResponse;
