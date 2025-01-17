@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\UpdateProfilePhotoRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,9 +12,6 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -21,9 +19,6 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
@@ -37,9 +32,22 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    /**
-     * Delete the user's account.
-     */
+    public function updatePhoto(UpdateProfilePhotoRequest $request): RedirectResponse
+    {
+        if ($request->hasFile('profile_photo')) {
+            $path = $request->file('profile_photo')->store('profile-photos', 'public');
+            
+            // Verwijder oude foto als die bestaat
+            if ($request->user()->profile_photo) {
+                Storage::disk('public')->delete($request->user()->profile_photo);
+            }
+
+            $request->user()->update(['profile_photo' => $path]);
+        }
+
+        return Redirect::route('profile.edit')->with('status', 'photo-updated');
+    }
+
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
@@ -56,5 +64,11 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function show($id): View
+    {
+        $user = User::findOrFail($id);
+        return view('profile.show', compact('user'));
     }
 }
